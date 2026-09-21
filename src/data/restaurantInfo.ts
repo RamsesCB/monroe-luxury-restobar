@@ -1,0 +1,58 @@
+export const RESTAURANT_INFO = {
+  name: "MONROE",
+  legalName: "Monroe Luxury Restobar S.A.C.",
+  tagline: "Alta Cocina de Autor & Coctelería Contemporánea",
+  city: "Chimbote, Ancash — Perú",
+  address: "Av. Francisco Bolognesi 640 (Zona Gastronómica Malecón), Chimbote",
+  phone: "+51 943 892 110",
+  whatsappNumber: "51943892110",
+  email: "reservas@monroerestobar.pe",
+  instagram: "@monroe.restobar",
+  tiktok: "@monroe.pe",
+  schedule: {
+    weekdays: "Martes a Jueves: 7:00 PM – 1:00 AM",
+    weekends: "Viernes a Sábado: 6:30 PM – 3:00 AM",
+    sunday: "Domingo de Autor: 1:00 PM – 9:00 PM",
+    monday: "Lunes: Cerrado por desarrollo creativo y maduración",
+  },
+  dressCode: "Elegante Casual / Smart Sophisticated (Se reserva el derecho de admisión)",
+  valetParking: "Servicio de Valet Parking privado y monitoreado sin costo para clientes",
+  sommelier: "Franco Valdivia — Head Sommelier & Mixology Director",
+  executiveChef: "Alessandro Moretti & Mateo Chumpitaz — Creadores de Experiencias",
+  coordinates: {
+    lat: -9.0754,
+    lng: -78.5936,
+  },
+  experienceZones: [
+    {
+      id: "salon_principal",
+      name: "Salón Principal Obsidian",
+      description: "Atmósfera íntima con iluminación cenital cálida, mesas de mármol negro y acústica curada.",
+      capacity: "45 comensales",
+    },
+    {
+      id: "cava_vinos",
+      name: "Cava Privada & Mesa de Catan",
+      description: "Espacio climatizado rodeado por más de 180 etiquetas selectas del viejo y nuevo mundo.",
+      capacity: "12 comensales",
+    },
+    {
+      id: "terraza_maritima",
+      name: "Terraza Lounge Bahía",
+      description: "Brisa marina con vista panorámica a la bahía de Chimbote, fire pits y coctelería al aire libre.",
+      capacity: "35 comensales",
+    },
+    {
+      id: "barra_autor",
+      name: "Barra de Alquimia & Coctelería",
+      description: "Primera fila frente a nuestros mixólogos, destilados premium y hielo cristalino tallado a mano.",
+      capacity: "16 puestos",
+    },
+    {
+      id: "mesa_chef_vip",
+      name: "Mesa del Chef VIP (Omakase Restobar)",
+      description: "Experiencia de 7 u 11 tiempos con servicio personal del Chef Ejecutivo y maridaje de autor.",
+      capacity: "8 comensales exclusivos",
+    },
+  ],
+};
