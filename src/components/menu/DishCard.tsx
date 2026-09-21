@@ -37,16 +37,32 @@ export function DishCard({ dish, onSelect, onOpen3d }: DishCardProps) {
         {/* Top Media Container */}
         <div>
           <div className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden mb-5 bg-obsidian-950 border border-white/[0.06]">
-            <Image
-              src={dish.image}
-              alt={dish.name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-            />
+            {dish.video ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                disablePictureInPicture
+                disableRemotePlayback
+                poster={dish.image}
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+              >
+                {dish.videoWebm && <source src={dish.videoWebm} type="video/webm" />}
+                <source src={dish.video} type="video/mp4" />
+              </video>
+            ) : (
+              <Image
+                src={dish.image}
+                alt={dish.name}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+              />
+            )}
             
             {/* Gradient Scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-black/20 to-transparent opacity-80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-black/20 to-transparent opacity-80 pointer-events-none" />
 
             {/* Badges Overlay */}
             <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">

@@ -53,6 +53,8 @@ export interface Dish {
   description: string;
   longStory?: string;
   image: string;
+  video?: string;
+  videoWebm?: string;
   galleryImages?: string[];
   tags: DietaryTag[];
   chefNotes: string;

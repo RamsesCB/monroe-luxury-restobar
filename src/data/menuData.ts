@@ -82,6 +82,7 @@ export const DISHES: Dish[] = [
     isSignature: true,
     is3dAvailable: true,
     model3d: {
+      glbUrl: "/models3d/sample.glb",
       hasArSupport: true,
       scale: "1 1 1",
       cameraOrbit: "45deg 55deg 2.5m",
@@ -116,8 +117,11 @@ export const DISHES: Dish[] = [
     preparationTime: "16-20 min",
     origin: "Fusión Ítalo-Costera Monroe",
     isSignature: true,
+    video: "/videos/fettuccine_rotating.mp4",
+    videoWebm: "/videos/fettuccine_rotating.webm",
     is3dAvailable: true,
     model3d: {
+      glbUrl: "/models3d/sample.glb",
       hasArSupport: true,
       scale: "1 1 1",
       cameraOrbit: "30deg 60deg 2.2m",

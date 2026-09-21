@@ -82,13 +82,29 @@ export function DishDetailModal({ dish, onClose, onOpen3d }: DishDetailModalProp
               {/* Left Column: Image Gallery & 3D */}
               <div className="lg:col-span-6 space-y-4">
                 <div className="relative w-full h-72 sm:h-96 rounded-3xl overflow-hidden bg-obsidian-950 border border-white/10 shadow-2xl">
-                  <Image
-                    src={images[activeImageIndex] || dish.image}
-                    alt={dish.name}
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+                  {dish.video && activeImageIndex === 0 ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      disablePictureInPicture
+                      disableRemotePlayback
+                      poster={dish.image}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    >
+                      {dish.videoWebm && <source src={dish.videoWebm} type="video/webm" />}
+                      <source src={dish.video} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <Image
+                      src={images[activeImageIndex] || dish.image}
+                      alt={dish.name}
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
 
                   {/* 3D Action Overlay */}
                   {dish.is3dAvailable && (
