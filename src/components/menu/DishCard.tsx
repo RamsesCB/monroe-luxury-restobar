@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Sparkles, Plus, Eye, Box, Wine, ChefHat } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Plus, Box, Wine, ChefHat, Eye, Video, Layers } from "lucide-react";
 import { Dish } from "@/types/menu";
 import { formatPEN } from "@/lib/utils";
 import { GoldBadge } from "@/components/ui/GoldBadge";
@@ -16,130 +17,179 @@ interface DishCardProps {
 
 export function DishCard({ dish, onSelect, onOpen3d }: DishCardProps) {
   const { addItem } = useOrderStore();
+  const [activeMedia, setActiveMedia] = useState<"video" | number>("video");
+
+  const views = [
+    { id: "video", label: "Rotación 360°", icon: Video },
+    { id: 0, label: "Vista 45°", src: dish.galleryImages?.[0] || dish.image },
+    { id: 1, label: "Vista 15°", src: dish.galleryImages?.[1] || dish.image },
+    { id: 2, label: "Vista 90°", src: dish.galleryImages?.[2] || dish.image },
+  ];
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     addItem(dish, 1);
   };
 
-  const handleQuick3D = (e: React.MouseEvent) => {
+  const handleLaunchAR = (e: React.MouseEvent) => {
     e.stopPropagation();
     onOpen3d(dish);
   };
 
   return (
-    <div
-      onClick={() => onSelect(dish)}
-      className="group relative cursor-pointer rounded-[2rem] p-1.5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.07] hover:border-gold-500/40 hover:shadow-[0_20px_45px_-12px_rgba(0,0,0,0.95),0_0_25px_-5px_rgba(212,175,55,0.2)] hover:-translate-y-1.5 flex flex-col h-full"
-    >
-      <div className="relative w-full h-full rounded-[calc(2rem-0.375rem)] overflow-hidden bg-gradient-to-b from-[#151519]/95 via-[#111114]/95 to-[#0A0A0B]/98 border border-white/[0.04] p-5 flex flex-col justify-between">
-        
-        {/* Top Media Container */}
-        <div>
-          <div className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden mb-5 bg-obsidian-950 border border-white/[0.06]">
-            {dish.video ? (
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                disablePictureInPicture
-                disableRemotePlayback
-                poster={dish.image}
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-              >
-                {dish.videoWebm && <source src={dish.videoWebm} type="video/webm" />}
-                <source src={dish.video} type="video/mp4" />
-              </video>
-            ) : (
+    <div className="relative w-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center gap-8 sm:gap-12 py-6">
+      
+      {/* Visual Stage: Unobstructed, Floating, Borderless */}
+      <div className="w-full lg:w-1/2 flex flex-col items-center">
+        <div 
+          onClick={() => onSelect(dish)}
+          className="group relative w-full aspect-square max-w-[420px] rounded-[2.5rem] overflow-hidden cursor-pointer bg-gradient-to-b from-white/[0.03] to-transparent transition-all duration-500 hover:scale-[1.01]"
+        >
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute inset-0 bg-radial-gradient from-gold-500/10 via-transparent to-transparent opacity-80 pointer-events-none" />
+
+          {/* Active Media Renderer */}
+          {activeMedia === "video" && dish.video ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              disablePictureInPicture
+              disableRemotePlayback
+              poster={dish.image}
+              className="w-full h-full object-cover rounded-[2.5rem] pointer-events-none transition-transform duration-700 group-hover:scale-105"
+            >
+              {dish.videoWebm && <source src={dish.videoWebm} type="video/webm" />}
+              <source src={dish.video} type="video/mp4" />
+            </video>
+          ) : (
+            <div className="relative w-full h-full">
               <Image
-                src={dish.image}
+                src={
+                  typeof activeMedia === "number" && dish.galleryImages?.[activeMedia]
+                    ? dish.galleryImages[activeMedia]
+                    : dish.image
+                }
                 alt={dish.name}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover rounded-[2.5rem] transition-transform duration-700 group-hover:scale-105"
+                priority
               />
-            )}
-            
-            {/* Gradient Scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-black/20 to-transparent opacity-80 pointer-events-none" />
+            </div>
+          )}
 
-            {/* Badges Overlay */}
-            <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-              <div className="flex flex-wrap gap-1.5">
-                {dish.isSignature && (
-                  <GoldBadge size="sm" variant="gold">
-                    Signature
-                  </GoldBadge>
-                )}
-                {dish.tags.includes("Dry Aged") && (
-                  <GoldBadge size="sm" variant="obsidian">
-                    Dry Aged 45D
-                  </GoldBadge>
-                )}
-                {dish.tags.includes("Pasta Fresca Fatta a Mano") && (
-                  <GoldBadge size="sm" variant="obsidian">
-                    Fatta a Mano
-                  </GoldBadge>
-                )}
-              </div>
+          {/* Soft Organic Edge Vignette */}
+          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-t from-[#0A0A0B]/80 via-transparent to-transparent pointer-events-none" />
 
-              {dish.is3dAvailable && (
-                <button
-                  onClick={handleQuick3D}
-                  className="px-2.5 py-1 rounded-full bg-obsidian-950/90 hover:bg-gold-500/20 border border-gold-500/40 text-gold-300 text-[10px] font-bold tracking-wider uppercase flex items-center gap-1.5 backdrop-blur-md transition-all shadow-[0_0_12px_rgba(212,175,55,0.2)] hover:scale-105"
-                  title="Explorar modelo 3D & Realidad Aumentada"
-                >
-                  <Box className="w-3.5 h-3.5 text-gold-400 animate-spin" style={{ animationDuration: "10s" }} />
-                  <span>3D / AR</span>
-                </button>
-              )}
+          {/* Top Badges */}
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+            <div className="flex flex-wrap gap-1.5">
+              {dish.isSignature && <GoldBadge size="sm" variant="gold">Signature Monroe</GoldBadge>}
+              <GoldBadge size="sm" variant="obsidian">Fatta a Mano</GoldBadge>
             </div>
 
-            {/* Price Tag in Bottom Right of Image */}
-            <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-obsidian-950/90 backdrop-blur-md border border-gold-500/30 text-gold-300 font-serif font-bold text-base shadow-lg">
+            <div className="px-3 py-1 rounded-full bg-obsidian-950/80 backdrop-blur-md border border-gold-500/30 text-gold-300 text-xs font-mono font-bold">
               {formatPEN(dish.price)}
             </div>
           </div>
-
-          {/* Dish Information */}
-          <div className="space-y-2">
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-ivory group-hover:text-gold-300 transition-colors duration-300 line-clamp-1">
-              {dish.name}
-            </h3>
-            
-            <p className="text-xs text-gold-400/90 font-medium tracking-wide">
-              {dish.subtitle}
-            </p>
-
-            <p className="text-xs text-platinum/90 leading-relaxed line-clamp-2 pt-1 font-light">
-              {dish.description}
-            </p>
-          </div>
         </div>
 
-        {/* Card Footer: Pairing & Quick Action */}
-        <div className="pt-5 mt-4 border-t border-white/[0.06] flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-[11px] text-platinum truncate">
-            <Wine className="w-3.5 h-3.5 text-gold-400 shrink-0" />
-            <span className="truncate">
-              Maridaje: <span className="text-ivory font-medium">{dish.pairingSuggestion.name}</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
+        {/* Perspective Switcher Pills */}
+        <div className="flex items-center gap-2 mt-4 bg-white/[0.03] backdrop-blur-md p-1.5 rounded-full border border-white/[0.06]">
+          {dish.video && (
             <button
-              onClick={handleQuickAdd}
-              className="px-3.5 py-2 rounded-full bg-gold-500/15 hover:bg-gold-500 text-gold-300 hover:text-obsidian-950 border border-gold-500/30 hover:border-gold-500 text-xs font-semibold tracking-wide flex items-center gap-1.5 transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.1)] active:scale-95"
-              aria-label={`Añadir ${dish.name} a la mesa`}
+              onClick={() => setActiveMedia("video")}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all ${
+                activeMedia === "video"
+                  ? "bg-gold-500 text-obsidian-950 font-bold shadow-gold-glow"
+                  : "text-platinum/70 hover:text-ivory hover:bg-white/[0.04]"
+              }`}
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Mesa</span>
+              <Video className="w-3.5 h-3.5" />
+              <span>360° Video</span>
             </button>
+          )}
+
+          {dish.galleryImages?.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveMedia(idx)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeMedia === idx
+                  ? "bg-gold-500 text-obsidian-950 font-bold shadow-gold-glow"
+                  : "text-platinum/70 hover:text-ivory hover:bg-white/[0.04]"
+              }`}
+            >
+              {idx === 0 ? "45° Mesa" : idx === 1 ? "15° Frontal" : "90° Cenital"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Culinary Narrative & AR Action */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 text-left">
+        <div className="space-y-2">
+          <div className="text-xs font-mono text-gold-400/90 tracking-widest uppercase">
+            {dish.origin || "Creación de Autor • Monroe"}
           </div>
+
+          <h3 
+            onClick={() => onSelect(dish)}
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ivory hover:text-gold-300 cursor-pointer transition-colors duration-300 leading-tight"
+          >
+            {dish.name}
+          </h3>
+
+          <p className="text-sm sm:text-base text-gold-300/90 font-medium">
+            {dish.subtitle}
+          </p>
         </div>
 
+        <p className="text-sm text-platinum/90 font-light leading-relaxed">
+          {dish.description}
+        </p>
+
+        {/* Sommelier & Chef Note */}
+        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] space-y-2">
+          <div className="flex items-center gap-2 text-xs text-gold-400 font-medium">
+            <Wine className="w-4 h-4 text-gold-400" />
+            <span>Maridaje Sugerido: <span className="text-ivory">{dish.pairingSuggestion.name}</span></span>
+          </div>
+          <p className="text-xs text-platinum/70 italic">
+            "{dish.chefNotes}"
+          </p>
+        </div>
+
+        {/* Actions: Direct AR + Add to Table */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          {dish.is3dAvailable && (
+            <button
+              onClick={handleLaunchAR}
+              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-obsidian-950 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(212,175,55,0.35)] hover:scale-105 active:scale-95 transition-all"
+            >
+              <Box className="w-4 h-4" />
+              <span>Proyectar en tu Mesa (AR 1:1)</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleQuickAdd}
+            className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-gold-500/30 text-ivory text-xs font-semibold tracking-wider flex items-center justify-center gap-2 transition-all"
+          >
+            <Plus className="w-4 h-4 text-gold-400" />
+            <span>Añadir a mi Mesa • {formatPEN(dish.price)}</span>
+          </button>
+        </div>
+
+        {/* AR Dimension Notice */}
+        <div className="flex items-center gap-2 text-[11px] text-platinum/60 pt-1">
+          <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+          <span>Realidad Aumentada calibrada a escala real (28cm Ø) con anclaje automático sobre mesa plana</span>
+        </div>
       </div>
+
     </div>
   );
 }
