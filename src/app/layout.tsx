@@ -55,11 +55,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <Script
-          type="module"
-          src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
-          strategy="lazyOnload"
-        />
       </head>
       <body className="bg-obsidian-900 text-ivory antialiased min-h-screen relative selection:bg-gold-500 selection:text-obsidian-900">
         <div className="noise-overlay" aria-hidden="true" />

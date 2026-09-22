@@ -1,52 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { LuxuryNavbar } from "@/components/layout/LuxuryNavbar";
-import { HeroSection } from "@/components/layout/HeroSection";
 import { MenuSection } from "@/components/menu/MenuSection";
-import { EssenceSection } from "@/components/layout/EssenceSection";
-import { LocationSection } from "@/components/layout/LocationSection";
-import { LuxuryFooter } from "@/components/layout/LuxuryFooter";
 import { OrderDrawer } from "@/components/order/OrderDrawer";
-import { ReservationModal } from "@/components/reservations/ReservationModal";
-import { AtmosphereAudio } from "@/components/layout/AtmosphereAudio";
+import { LuxuryFooter } from "@/components/layout/LuxuryFooter";
 
 export default function Home() {
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-
   return (
-    <main className="relative bg-obsidian-900 min-h-screen text-ivory overflow-x-hidden">
+    <main className="relative bg-obsidian-900 min-h-screen text-ivory overflow-x-hidden flex flex-col justify-between selection:bg-gold-500 selection:text-obsidian-900 pt-20">
       
-      {/* Luxury Navbar */}
-      <LuxuryNavbar
-        isPlayingAudio={isPlayingAudio}
-        onToggleAudio={() => setIsPlayingAudio(!isPlayingAudio)}
-      />
+      {/* Clean Minimal Luxury Header */}
+      <LuxuryNavbar />
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Main Single Featured Dish Showcase */}
+      <div className="flex-1 flex items-center justify-center py-6 sm:py-12">
+        <MenuSection />
+      </div>
 
-      {/* Interactive Digital Menu with 3D / AR */}
-      <MenuSection />
-
-      {/* Brand Essence & Storytelling */}
-      <EssenceSection />
-
-      {/* Location, Schedule & Map */}
-      <LocationSection />
-
-      {/* Luxury Footer */}
+      {/* Minimal Footer */}
       <LuxuryFooter />
 
-      {/* Drawers & Modals */}
+      {/* Table Order Drawer */}
       <OrderDrawer />
-      <ReservationModal />
-
-      {/* Procedural Audio Soundscape */}
-      <AtmosphereAudio
-        isPlaying={isPlayingAudio}
-        onToggle={() => setIsPlayingAudio(!isPlayingAudio)}
-      />
 
     </main>
   );
