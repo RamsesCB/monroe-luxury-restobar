@@ -32,16 +32,22 @@ export function DishModelViewer({ dish, onClose, onAddToCart }: DishModelViewerP
   const modelViewerRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic import of model-viewer for SSR safety
+  // Ensure model-viewer custom element is loaded safely
   useEffect(() => {
-    import("@google/model-viewer")
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.warn("Model viewer load note:", err);
-        setIsLoading(false);
-      });
+    if (typeof window !== "undefined" && customElements.get("model-viewer")) {
+      setIsLoading(false);
+      return;
+    }
+    const existingScript = document.querySelector('script[src*="model-viewer"]');
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.type = "module";
+      script.src = "https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js";
+      script.onload = () => setIsLoading(false);
+      document.head.appendChild(script);
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   // Configure model-viewer events and AR listeners
