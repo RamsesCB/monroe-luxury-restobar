@@ -20,12 +20,12 @@ export function DishCard({ dish }: DishCardProps) {
   const [isCallingWaiter, setIsCallingWaiter] = useState(false);
   const [is3DOpen, setIs3DOpen] = useState(false);
 
-  // Slides: 0 = 360 Video, 1 = 45° angle, 2 = 15° detail, 3 = 90° top
+  // Slides: 0 = 360 Video, 1 = 45° angle, 2 = 0-15° detail, 3 = 90° top
   const slides = [
     { type: "video", src: dish.video || "/videos/fettuccine_rotating.mp4", label: "Video 360°" },
     { type: "image", src: "/dishes/garganelli/Vista45Grados.jpg", label: "Vista 45°" },
-    { type: "image", src: "/dishes/garganelli/Vista0-15Grados.jpg", label: "Vista 15°" },
-    { type: "image", src: "/dishes/garganelli/Vista90Grados.jpg", label: "Vista 90°" },
+    { type: "image", src: "/dishes/garganelli/fettuccine_rasante_0-15grados_transparente.png", label: "Vista 0-15°" },
+    { type: "image", src: "/dishes/garganelli/fettuccine_cenital_90grados_transparente.png", label: "Vista 90°" },
   ];
 
   const handleNextSlide = () => {

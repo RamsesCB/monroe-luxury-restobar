@@ -17,10 +17,14 @@ export const FEATURED_DISH: Dish = {
   category: "pastas",
   price: 74.0,
   description: "Pasta artesanal al telar de bronce con pesto de pistachos sicilianos DOP, langostinos jumbo al horno Josper y stracciatella fresca.",
-  image: "/dishes/garganelli/plato_monroe_hd.png",
+  image: "/dishes/garganelli/fettuccine_cenital_90grados_transparente.png",
+  video: "/videos/fettuccine_rotating.mp4",
+  videoWebm: "/videos/fettuccine_rotating.webm",
   galleryImages: [
-    "/dishes/garganelli/plato_monroe_hd.png",
+    "/videos/fettuccine_rotating.mp4",
     "/dishes/garganelli/Vista45Grados.jpg",
+    "/dishes/garganelli/fettuccine_rasante_0-15grados_transparente.png",
+    "/dishes/garganelli/fettuccine_cenital_90grados_transparente.png",
   ],
   tags: ["Estrella Monroe"],
   chefNotes: "Mezclar la stracciatella central antes del primer bocado para integrar la textura fría del queso con el pesto caliente.",
@@ -39,6 +43,14 @@ export const FEATURED_DISH: Dish = {
   preparationTime: "15-18 min",
   origin: "Monroe Restobar",
   isSignature: true,
+  is3dAvailable: true,
+  model3d: {
+    glbUrl: "/models3d/plato_monroe.glb",
+    usdzUrl: "/models3d/plato_monroe.usdz",
+    posterImage: "/dishes/garganelli/fettuccine_cenital_90grados_transparente.png",
+    realDimensions: "28cm Ø • Escala Real",
+    hasArSupport: true,
+  },
   stockAvailable: true,
 };
 

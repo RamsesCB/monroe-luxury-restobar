@@ -59,6 +59,11 @@ export default function RootLayout({
       <body className="bg-obsidian-900 text-ivory antialiased min-h-screen relative selection:bg-gold-500 selection:text-obsidian-900">
         <div className="noise-overlay" aria-hidden="true" />
         {children}
+        <Script
+          type="module"
+          src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
